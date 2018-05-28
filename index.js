@@ -1,13 +1,12 @@
 'use strict';
 
-
-
 //Requirements
 const got = require('got');
 const cheerio = require('cheerio');
 const promise = require('pinkie-promise');
+const cp = require('child-process');
 
-
+//'index' has been replaced with 'quora' in some spots...
 
 //Returns first space-separated substring
 const getAmount = string => {
@@ -15,11 +14,11 @@ const getAmount = string => {
 }
 
 //Takes a jquery DOM object, eq(index) to start at, and object to modify
-const getMaxValues = (jqueryArgument, startIndex, method, responseObject, propertyName) => {
-	const questionName = jqueryObject[eq(parseInt(startIndex))][method];
+const getMaxValues = (jqueryArgument, startquora, method, responseObject, propertyName) => {
+	const questionName = jqueryObject[eq(parseInt(startquora))][method];
     if (questionName !== '') {
-        responseObject[propertyName + startIndex] = questionName;
-        getMaxValues(jqueryArgument, startIndex, responseObject);
+        responseObject[propertyName + startquora] = questionName;
+        getMaxValues(jqueryArgument, startquora, responseObject);
 	} else {return responseObject}
 }
 
@@ -33,77 +32,21 @@ const clientErr = err => {
 
 
 //Return error if user tries quora-api()
-const quora = module.exports = () => {return new Error("Directly calling quora-api is not supported. Please use its methods instead.")}
+const quora = module.exports = () => {return new Error("Directly calling quora-api is not supported. Please use its methods instead.")};
 
-//Returns basic information of a Quora user from profile URL - name, profile pic URL, main credential, and bio
-quora.profile = profileUrl => {
-    if (typeof profileUrl !== 'string') {
-        return promise.reject(new Error("Invalid URL: requires complete URL as string."));
-    }
-
-	return got(profileUrl).then(res => {
-        if (res.statusCode === 200) {
-            console.log("URL request successful.");
-        } else {
-            return promise.reject(new Error("URL request failed server-side: " + res.statusMessage));
+/*
+Returns the full contents of a Quora profile's biography, or null if no biography or invalid profile link. TODO add profileUrl verification
+@param {string} profileUrl Complete URL of a Quora profile eg https://www.quora.com/profile/Adam-DAngelo
+ */
+quora.profile.biography = profileUrl => {
+    return cp.execSync('phantomjs ../intercept-xhr/biography.js ' + profileUrl, (error, stdout, stderr) => {
+        if (error) {
+            throw error;
         }
+        return stdout;
+    }).toString('ascii');
+};
 
-		const $ = cheerio.load(res.body);
-
-        const username = $('.ProfileNameAndSig').find('.user').text();
-        if (username !== '') {
-            console.log("Valid profile URL for " + username + ".");
-        } else {
-            return promise.reject(new Error("Invalid profile URL."));
-        }
-
-        return {
-            username: $('.ProfileNameAndSig').find('.user').text(),
-            profilePicture: $('.profile_photo_img').attr('src') || null,
-            mainCredential: $('.ProfileNameAndSig').find('.UserCredential').text() || null,
-            miniBio: $('.ProfileDescription').find('.UserDescriptionExpandable').find('.ui_qtext_rendered_qtext').html() || null
-            //loaded on-click after pageload, cannot be retrieved with got - same content-protection as answers
-            //when loaded, $('.ProfileDescription').find('.UserDescriptionExpandable.Expandable.SimpleToggle.hidden').find('.ui_qtext_rendered_qtext').text() works
-        }
-	}).catch(err => {
-		return clientErr(err);
-	})
-}
-
-//Returns user credentials (user-made and assigned) from profile URL
-quora.profile.credentials = profileUrl => {
-    if (typeof profileUrl !== 'string') {
-        return promise.reject(new Error("Invalid URL: requires complete URL as string."));
-    }
-
-	return got(profileUrl).then(res => {
-        if (res.statusCode === 200) {
-            console.log("URL request successful.");
-        } else {
-            return promise.reject(new Error("URL request failed server-side: " + res.statusMessage));
-        }
-
-		const $ = cheerio.load(res.body);
-
-        const username = $('.ProfileNameAndSig').find('.user').text();
-        if (username !== '') {
-            console.log("Valid profile URL for " + username);
-        } else {
-            return promise.reject(new Error("Invalid profile URL."));
-        }
-
-		return {
-            workCredential: $('.WorkCredentialListItem').find('.IdentityCredential').text() || null,
-            workTime: $('.WorkCredentialListItem').find('.detail_text').text() || null,
-            studyCredential: $('.SchoolCredentialListItem').find('.IdentityCredential').text() || null,
-            studyTime: $('.SchoolCredentialListItem').find('.detail_text').text() || null,
-            locationCredential: $('.LocationCredentialListItem').find('.IdentityCredential').text() || null,
-            locationTime: $('.LocationCredentialListItem').find('.detail_text').text() || null
-		}
-	}).catch(err => {
-		return clientErr(err);
-	});
-}
 
 //Returns basic user statistics (# ofs) from profile URL
 quora.profile.stats = profileUrl => {
@@ -120,10 +63,16 @@ quora.profile.stats = profileUrl => {
 
         const $ = cheerio.load(res.body);
 
+        var output = {};
+
         const username = $('.ProfileNameAndSig').find('.user').text();
         if (username !== '') {
             console.log("Valid profile URL for " + username + ".");
-        } else {
+        } else if ($('.ProfileNameAndSig').find('.user').is(':visible')) {
+            output.anonymous = true;
+            output.name = "Quora User";
+            output.job = null;
+
             return promise.reject(new Error("Invalid profile URL."));
         }
 
@@ -241,7 +190,7 @@ quora.answer = answerUrl => {
     	}
 
     	var answered = $('.answer_permalink').text();
-    	answered = answered.substring(answered.indexOf(' ') + 1, answered.lastIndexOf(' '))
+    	answered = answered.substring(answered.quoraOf(' ') + 1, answered.lastquoraOf(' '))
 
 		return {
     		question: $('.question_text').find('.rendered_qtext').text(),
