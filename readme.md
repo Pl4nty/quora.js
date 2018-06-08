@@ -1,6 +1,6 @@
 # dev: work-in-progress features
 
-## DO NOT CLONE
+## DO NOT INSTALL
 WIPs are pushed here, this branch is almost guaranteed to be broken.
 Even detailed feature requests can be added (eg pseudocode).
 
