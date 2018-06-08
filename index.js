@@ -34,6 +34,8 @@ const clientErr = err => {
 //Return error if user tries quora-api()
 const quora = module.exports = () => {return new Error("Directly calling quora-api is not supported. Please use its methods instead.")};
 
+import "./scrape/"
+
 /*
 Returns the full contents of a Quora profile's biography, or null if no biography or invalid profile link. TODO add profileUrl verification
 @param {string} profileUrl Complete URL of a Quora profile eg https://www.quora.com/profile/Adam-DAngelo
