@@ -2,7 +2,7 @@
 
 ## DO NOT INSTALL
 WIPs are pushed here, this branch is almost guaranteed to be broken.
-Even detailed feature requests can be added (eg pseudocode).
+Even detailed feature requests are added (eg pseudocode).
 
 ## Rules
 1. Avoid commenting on code specifics eg syntax, comments, formatting - most features will undergo refactoring later
