@@ -1,12 +1,13 @@
 'use strict';
 
 //Requirements
-const got = require('got');
-const cheerio = require('cheerio');
-const promise = require('pinkie-promise');
-const cp = require('child-process');
+const profile = require('scrape/profile.js');
 
-//'index' has been replaced with 'quora' in some spots...
+module.exports = {
+	profile: profile
+};
+
+/*'index' has been replaced with 'quora' in some spots...
 
 //Returns first space-separated substring
 const getAmount = string => {
@@ -39,7 +40,7 @@ import "./scrape/"
 /*
 Returns the full contents of a Quora profile's biography, or null if no biography or invalid profile link. TODO add profileUrl verification
 @param {string} profileUrl Complete URL of a Quora profile eg https://www.quora.com/profile/Adam-DAngelo
- */
+ /
 quora.profile.biography = profileUrl => {
     return cp.execSync('phantomjs ../intercept-xhr/biography.js ' + profileUrl, (error, stdout, stderr) => {
         if (error) {
@@ -520,3 +521,4 @@ quora.totalViews = url => {
 		return err;
 	})
 }
+*/
