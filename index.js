@@ -1,7 +1,7 @@
 'use strict';
 
 //Requirements
-const profile = require('scrape/profile.js');
+const profile = require('./scrape/profile.js');
 
 module.exports = {
 	profile: profile

@@ -55,7 +55,7 @@ const getStat = {
     'answers': ($) => {
         return $('.AnswersNavItem').find('.list_count').text() || null;
     },
-    'questions:': ($) => {
+    'questions': ($) => {
         return $('.QuestionsNavItem').find('.list_count').text() || null;
     },
 	/* Not visible to anonymous users
