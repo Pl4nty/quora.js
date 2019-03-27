@@ -1,16 +1,19 @@
-const got = require('got');
-const cheerio = require('cheerio');
+const util = require('./util.js');
 
-//args[] = stats to return
-//only get chosen stats (exec()?)
-const getList = ($, listSelector) => {
-    const listLength = $('.layout_3col_right').find(listSelector).length;
-    if (listLength !== 0) {
+/**
+ * Finds all valid credential pairs in a category
+ * @param {CheerioInstance} $ - Cheerio instance with a profile page loaded
+ * @param {String} listSelector - credential category's CSS selector
+ * @returns {Array} 2D array of [credential,value] arrays
+ */
+const getCredentialPairs = ($, listSelector) => {
+    const list = $('.layout_3col_right').find(listSelector);
+    if (list.length !== 0) {
         let temp = [];
-        for (let i = 0; i < listLength; i++) {
+        for (let i = 0; i < list.length; i++) {
             temp.push([
-                $('.layout_3col_right').find(listSelector).find('.UserCredential').eq(i).text(),
-                $('.layout_3col_right').find(listSelector).find('.detail_text').eq(i).text()
+                list.find('.UserCredential').eq(i).text(),
+                list.find('.detail_text').eq(i).text()
             ]);
         }
         return temp;
@@ -19,20 +22,52 @@ const getList = ($, listSelector) => {
     }
 };
 
-const convertSuffix = viewPhrase => {
-	let suffixedViews = viewPhrase.split(" ")[0];
-	let l = suffixedViews.length;
-	return parseFloat(suffixedViews.substring(0,l)) * (suffix => {
-		switch(suffix) {
-			case "k": return 1000; break;
-			case "m": return 1000000; break;
-			case "b": return 1000000000; break;
-			default: return 1; break;
-		}
-	})(suffixedViews.charAt(l-1));
-};
+/**
+ * @typedef {Object} profileStats
+ * 
+ * Basic profile data
+ * @property {String} name - human-readable name
+ * @property {Boolean} anonymous - eg banned
+ * @property {Boolean} verified
+ * @property {String} icon - URL
+ * @property {String} defaultCredential
 
-const getStat = {
+ * 
+ * Stats
+ * @property {Number} answers
+ * @property {Number} questions
+ * @property {Number} posts
+ * @property {Number} blogs
+ * @property {Number} followers
+ * @property {Number} following
+ * @property {Number} topics
+ * @property {Number} totalViews
+ * @property {Number} monthlyViews
+ * 
+ * Credentials by type
+ * @property {String[]} workCredential
+ * @property {String[]} studyCredential
+ * @property {String[]} locationCredential
+
+ * Years awarded
+ * @property {Number[]} topWriter
+ * @property {Number[]} topAsker
+ * 
+ * Years and months awarded
+ * @property {Number[]} sessionHost
+ * 
+ * Publishers
+ * @property {String[]} published
+ * 
+ * Dates awarded
+ * @property {Number[]} knowledgePrize
+ *
+ */
+
+ /**
+  * @param {profileStats} profileStats
+  */
+const profileStats = {
     'name': ($) => {
         return $('.user').eq(0).text() || null;
     },
@@ -42,7 +77,7 @@ const getStat = {
     'verified': ($) => {
         return $('.VerificationBadge').length !== 0;
     },
-    'profilePicture': ($) => {
+    'icon': ($) => {
         return $('.profile_photo_img').eq(0).attr('src') || null;
     },
     'defaultCredential': ($) => {
@@ -81,21 +116,21 @@ const getStat = {
     'edits': ($) => {
         return $('.OperationsNavItem').find('.list_count').text() || null;
     },*/
-    'workCredential': ($) => {//array of jobs
-        return getList($, '.WorkCredentialListItem') || null;
-    },
-    'studyCredential': ($) => { //array of studies
-        return getList($, '.SchoolCredentialListItem') || null;
-    },
-    'locationCredential': ($) => {
-        return getList($, '.LocationCredentialListItem') || null;
-    },
     'totalViews': ($) => {
-        return convertSuffix($('.AnswerViewsAboutListItem').find('.main_text').text()) || null;
+        return util.suffixedNumToInt($('.AnswerViewsAboutListItem').find('.main_text').text().split(' ')[0]) || null;
     },
     'monthlyViews': ($) => {
-        return convertSuffix($('.AnswerViewsAboutListItem').find('.detail_text').text()) || null;
+        return util.suffixedNumToInt($('.AnswerViewsAboutListItem').find('.detail_text').text().split(' ')[0]) || null;
     },//TODO convert views to int
+    'workCredential': ($) => {
+        return getStatList($, '.WorkCredentialListItem') || null;
+    },
+    'studyCredential': ($) => {
+        return getStatList($, '.SchoolCredentialListItem') || null;
+    },
+    'locationCredential': ($) => {
+        return getStatList($, '.LocationCredentialListItem') || null;
+    },
     'topWriter': ($) => {
         return $('.TopWriterAboutListItem').find('.detail_text').text().replace(/\D/g,'').match(/.{1,4}/g) || false;
     },
@@ -113,48 +148,5 @@ const getStat = {
     }
 };
 
-//Returns information of a Quora user from profile URL
-//@required String profileUrl URL of Quora profile to scrape, including endpoint and protocol (eg https://quora.com/profile/Thomas-Plant-1)
-//@optional Array targetStats statistics to be calculated and returned, see documentation. All stats will be returned if no targets are given
-//@returns Object
-//  String name
-//  Boolean anonymous
-function stats(profileUrl, targetStats) {
-
-	//Verify profileUrl
-	if (typeof profileUrl !== 'string' || !/^https:\/\/www\.quora\.com\/profile\/(?:[A-Za-z]+-)+[A-Za-z]+(?:-[0-9]+)?(?:\/answers\\?sort=(?:recency|views))?$/.test(profileUrl)) {
-		Promise.reject(new Error("Invalid URL: requires complete URL as string."));
-	}
-
-	//Target all stats if provided with invalid targets
-	if (!Array.isArray(targetStats) || targetStats.every(targetStat => {
-		return targetStat in targetStats;
-	})) {
-		targetStats = Object.keys(getStat);
-	}
-
-	return got(profileUrl).then(res => {
-		if (res.statusCode === 200) {
-			console.log("Profile load successful.");
-		} else {
-			return Promise.reject("Request failed server-side: " + res.statusMessage);
-		}
-
-		try {
-			let $ = cheerio.load(res.body);
-			//This is supposed to run cheerio queries asynchronously, can't tell if it actually does though
-			let tempObject = {};
-			return Promise.all(targetStats.map(async targetStat => {
-				tempObject[`${targetStat}`] = getStat[targetStat]($);
-			})).then(() => tempObject);
-		} catch(err) {
-			console.error(err);
-			return Promise.reject("HTML parsing failed.")
-		}
-	}).catch(err => {
-		return Promise.reject(new Error("Request failed client-side: " + err));
-	})
-}
-
 //Indirect call to allow in-file testing
-module.exports = stats;
+module.exports = profileStats;

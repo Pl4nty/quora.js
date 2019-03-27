@@ -14,9 +14,6 @@
     "type": "git",
     "url": "git+https://github.com/Pl4nty/Quora.js.git"
   },
-  "scripts": {
-    "test": "node test.js"
-  },
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
     "got": "^9.6.0"
@@ -25,5 +22,7 @@
     "url": "https://github.com/Pl4nty/Quora.js/issues"
   },
   "homepage": "https://github.com/Pl4nty/Quora.js#readme",
-  "devDependencies": {}
+  "devDependencies": {
+    "eslint": "^5.15.3"
+  }
 }
