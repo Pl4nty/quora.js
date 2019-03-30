@@ -1,135 +1,28 @@
 {
-  "_args": [
-    [
-      {
-        "raw": "quora-api",
-        "scope": null,
-        "escapedName": "quora-api",
-        "name": "quora-api",
-        "rawSpec": "",
-        "spec": "latest",
-        "type": "tag"
-      },
-      "C:\\Users\\T. Plant"
-    ]
-  ],
-  "_from": "quora-api@latest",
-  "_id": "quora-api@1.0.1",
-  "_inCache": true,
-  "_location": "/quora-api",
-  "_nodeVersion": "5.5.0",
-  "_npmOperationalInternal": {
-    "host": "packages-12-west.internal.npmjs.com",
-    "tmp": "tmp/quora-api-1.0.1.tgz_1484686501787_0.48048797133378685"
-  },
-  "_npmUser": {
-    "name": "rishi",
-    "email": "rushforlinux@gmail.com"
-  },
-  "_npmVersion": "4.0.5",
-  "_phantomChildren": {},
-  "_requested": {
-    "raw": "quora-api",
-    "scope": null,
-    "escapedName": "quora-api",
-    "name": "quora-api",
-    "rawSpec": "",
-    "spec": "latest",
-    "type": "tag"
-  },
-  "_requiredBy": [
-    "#USER"
-  ],
-  "_resolved": "https://registry.npmjs.org/quora-api/-/quora-api-1.0.1.tgz",
-  "_shasum": "9d61be467767cc3978153c3eac2e9b09f662470c",
-  "_shrinkwrap": null,
-  "_spec": "quora-api",
-  "_where": "C:\\Users\\T. Plant",
-  "author": {
-    "name": "Rishi Giri",
-    "email": "rushforlinux@gmail.com",
-    "url": "rishigiri.com"
-  },
-  "bugs": {
-    "url": "https://github.com/codedotjs/quora-api/issues"
-  },
-  "dependencies": {
-    "cheerio": "0.20.0",
-    "got": "5.6.0",
-    "pinkie-promise": "2.0.1"
-  },
-  "description": "An unofficial API for Quora",
-  "devDependencies": {
-    "ava": "^0.15.0",
-    "xo": "^0.16.0"
-  },
-  "directories": {
-    "example": "examples"
-  },
-  "dist": {
-    "shasum": "9d61be467767cc3978153c3eac2e9b09f662470c",
-    "tarball": "https://registry.npmjs.org/quora-api/-/quora-api-1.0.1.tgz"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "files": [
-    "index.js"
-  ],
-  "gitHead": "ecc55625aa4a6fc6f8b75ca4daa5e95ba7fb3bf0",
-  "homepage": "https://github.com/codedotjs/quora-api#readme",
-  "keywords": [
-    "unofficial",
-    "quora",
-    "api",
-    "fetch",
-    "profile-picture",
-    "followers",
-    "following",
-    "public-answers",
-    "questions",
-    "edits",
-    "monthly-views",
-    "total-views",
-    "bio",
-    "full-bio",
-    "posts",
-    "knows-about",
-    "highlights",
-    "about",
-    "answer",
-    "answer-count",
-    "user-answer",
-    "total-blogs",
-    "activities",
-    "asked-questions",
-    "answered-questions",
-    "scrap",
-    "extract",
-    "data",
-    "stats",
-    "informations"
-  ],
+  "name": "quorajs",
+  "description": "quora.js is a NPM package for scraping-based API access to https://quora.com.",
+  "author": "Thomas Plant <contact@tplant.com.au> (https://tplant.com.au)",
   "license": "MIT",
-  "main": "index.js",
-  "maintainers": [
-    {
-      "name": "rishi",
-      "email": "rushforlinux@gmail.com"
-    }
+  "keywords": [
+    "quora",
+    "scraper",
+    "api"
   ],
-  "name": "quora-api",
-  "optionalDependencies": {},
-  "readme": "ERROR: No README data found!",
+  "version": "0.1.0",
+  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/codedotjs/quora-api.git"
+    "url": "git+https://github.com/Pl4nty/Quora.js.git"
   },
-  "scripts": {
-    "test": "xo && ava"
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "got": "^9.6.0"
   },
-  "version": "1.0.1",
-  "xo": {
-    "esnext": true
+  "bugs": {
+    "url": "https://github.com/Pl4nty/Quora.js/issues"
+  },
+  "homepage": "https://github.com/Pl4nty/Quora.js#readme",
+  "devDependencies": {
+    "eslint": "^5.15.3"
   }
 }
