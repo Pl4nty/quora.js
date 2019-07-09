@@ -1,4 +1,6 @@
 .idea/
-package-lock.json
+dist/
+docs/
 node_modules/
-*/out/
+package-lock.json
+.eslintrc.json

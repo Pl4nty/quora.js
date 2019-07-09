@@ -1,0 +1,17 @@
+{
+    "out": "./docs",
+    "ignoreCompilerErrors": "true",
+
+    "module": "es2015",
+    "target": "ES2017",
+    "tsconfig": "./tsconfig.json",
+
+    "theme": "default",
+    "name": "quora.js",
+    "readme": "./readme.md",
+    "hideGenerator": "true",
+    "gaID": "",
+    "gaSite": "quorajs-docs",
+
+    "includes": "./src/"
+}
