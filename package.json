@@ -14,19 +14,24 @@
     "type": "git",
     "url": "git+https://github.com/Pl4nty/Quora.js.git"
   },
-  "dependencies": {},
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "got": "^9.6.0"
+  },
   "bugs": {
     "url": "https://github.com/Pl4nty/Quora.js/issues"
   },
   "homepage": "https://github.com/Pl4nty/Quora.js#readme",
   "devDependencies": {
+    "@types/cheerio": "^0.22.11",
+    "@types/got": "^9.4.4",
     "chai": "^4.2.0",
-    "cheerio": "^1.0.0-rc.2",
-    "eslint": "^5.15.3",
-    "got": "^9.6.0",
-    "mocha": "^6.0.2"
+    "mocha": "^6.1.4",
+    "typedoc": "^0.14.2",
+    "typescript": "^3.5.1"
   },
   "scripts": {
-    "test": "mocha test --timeout 10000"
+    "test": "mocha test --timeout 10000",
+    "make-docs": "typedoc --options typedoc.json"
   }
 }

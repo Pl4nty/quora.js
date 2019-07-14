@@ -1,4 +1,4 @@
-const space = require('../scrape/space.js')
+const space = require('../src/space.js')
 const cheerio = require('cheerio')
 const got = require('got')
 const expect = require('chai').expect;
@@ -33,7 +33,9 @@ describe('icon', () => {
 })
 
 describe('about', () => {
-    it('should be a string')
+    it('should be a string', () => {
+        expect(stats.about).to.be.a('string')
+    }
 })
 
 describe('details', () => {
@@ -44,7 +46,6 @@ describe('details', () => {
 
 describe('contributors', () => {
     it('should return an array of contributor profile URIs', () => {
-        console.log(stats.contributors)
         expect(stats.contributors).to.be.a('array')
     })
     it('should contain valid profile URI strings', () => {
@@ -52,3 +53,4 @@ describe('contributors', () => {
                                      .to.match(/^[\p{L}\p{M}*]+-[\p{L}\p{M}*]+(-[\d]+)?$/u)
     })
 })
+
