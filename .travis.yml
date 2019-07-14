@@ -1,3 +1,18 @@
 language: node_js
 node_js:
-  - "12"
+  - "12" # current
+  - "11"
+  - "10" # LTS
+
+script: echo "Testing against $(node -v)..."
+
+jobs:
+  include:
+    - stage: npm current
+      node_js: "12"
+      script: echo "Deploying to npm"
+      deploy: 
+        provider: npm
+        email: "contact@tplant.com.au"
+        api_key: $NPM_API_KEY
+        on: deploy-npm-release

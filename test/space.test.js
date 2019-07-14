@@ -35,7 +35,7 @@ describe('icon', () => {
 describe('about', () => {
     it('should be a string', () => {
         expect(stats.about).to.be.a('string')
-    }
+    })
 })
 
 describe('details', () => {
