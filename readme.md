@@ -1,4 +1,5 @@
 # Latest - feature testing
+[![Build Status](https://travis-ci.org/pl4nty/quora.js.svg?branch=latest)](https://travis-ci.org/pl4nty/quora.js) [![npm version](https://badge.fury.io/js/quorajs.svg)](https://badge.fury.io/js/quorajs)
 
 ## Warning: This branch is usually unstable, install at your own risk
 Use in production is discouraged, particularly if using an existing database
