@@ -23,15 +23,19 @@
   },
   "homepage": "https://github.com/Pl4nty/Quora.js#readme",
   "devDependencies": {
+    "@types/chai": "^4.1.7",
     "@types/cheerio": "^0.22.11",
     "@types/got": "^9.4.4",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.6.8",
     "chai": "^4.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^6.2.0",
+    "ts-node": "^8.3.0",
     "typedoc": "^0.14.2",
     "typescript": "^3.5.1"
   },
   "scripts": {
-    "test": "mocha test --timeout 10000",
+    "test": "mocha -r ts-node/register test/*.spec.ts --timeout 10000",
     "make-docs": "typedoc --options typedoc.json"
   }
 }
