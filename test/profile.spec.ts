@@ -4,14 +4,13 @@ import Profile from '../src/models/profile'
 import { promises } from 'fs'
 
 const testUris = [
-    'Thomas-Plant-1',
-    'Jon-Davis-10'
+    'Thomas-Plant-1'
 ];
 
 testUris.forEach(uri => {
     describe(`Profile ${uri}`, () => {
         let liveProfile: Profile;
-        let cachedProfile: {
+        let staticFields: {
             name: string,
             anonymous: boolean,
             verified: boolean,
@@ -27,21 +26,15 @@ testUris.forEach(uri => {
                 liveProfile.load(),
                 json = await promises.readFile(`./test/cache/${uri}.json`, 'utf8')
             ]).then(() => {
-                cachedProfile = JSON.parse(json)
+                staticFields = JSON.parse(json)
             })
         })
 
-        it("has a name", () => {
+        it("matches expected name and anon/verified status", () => {
             expect(liveProfile.name()).to.not.be.empty;
-            expect(liveProfile.name()).to.equal(cachedProfile.name)
-        })
-    
-        it("could be anonymous", () => {
-            expect(liveProfile.anonymous()).to.equal(cachedProfile.anonymous);
-        })
-
-        it("could be verified", () => {
-            expect(liveProfile.verified()).to.equal(cachedProfile.verified);
+            expect(liveProfile.name()).to.equal(staticFields.name)
+            expect(liveProfile.anonymous()).to.equal(staticFields.anonymous);
+            expect(liveProfile.verified()).to.equal(staticFields.verified);
         })
 
         it("has a profile picture", () => {
@@ -49,16 +42,17 @@ testUris.forEach(uri => {
         })
 
         it("could have a default credential", () => {
-            expect(liveProfile.iconUrl()).to.not.be.empty;
+            expect(liveProfile.iconUrl()).to.be.a('string');
         })
 
-        // I hope so anyway...
-        it("has answers", () => {
+        it("has numeric stats", () => {
             expect(liveProfile.answers()).to.be.a('number');
-        })
-
-        it("has questions", () => {
             expect(liveProfile.questions()).to.be.a('number');
+            expect(liveProfile.posts()).to.be.a('number');
+            expect(liveProfile.blogs()).to.be.a('number');
+            expect(liveProfile.followers()).to.be.a('number');
+            expect(liveProfile.following()).to.be.a('number');
+            expect(liveProfile.topics()).to.be.a('number');
         })
     })
 })
