@@ -49,26 +49,26 @@ export default class Profile extends Page {
 
 	// Not visible to anonymous users
     // spaces = (): number => parseInt(this.$('.AnswersNavItem').find('.list_count').text()))
-    // Not visible to anonymous users
     // shares = (): number => parseInt(this.$('.QuestionsNavItem').find('.list_count').text())
+    // posts = (): number => parseInt(this.$('.PostsNavItem').find('.list_count').text())
+    // blogs = (): number => parseInt(this.$('.BlogsNavItem').find('.list_count').text())
+    // topics = (): number => parseInt(this.$('.TopicsNavItem').find('.list_count').text())
+
     // Removed from UI, but may come back
     // edits: (): number => parseInt(this.$('.OperationsNavItem').find('.list_count').text())  
     
     // Numeric stats
     answers = (): number => parseInt(this.$('.AnswersNavItem').find('.list_count').text())
     questions = (): number => parseInt(this.$('.QuestionsNavItem').find('.list_count').text())
-    posts = (): number => parseInt(this.$('.PostsNavItem').find('.list_count').text())
-    blogs = (): number => parseInt(this.$('.BlogsNavItem').find('.list_count').text())
     followers = (): number => parseInt(this.$('.FollowersNavItem').find('.list_count').text())
     following = (): number => parseInt(this.$('.FollowingNavItem').find('.list_count').text())
-    topics = (): number => parseInt(this.$('.TopicsNavItem').find('.list_count').text())
-    //totalViews = (): number => parseInt(util.suffixedNumToInt(this.$('.AnswerViewsAboutListItem').find('.main_text').text().split(' ')[0]))
-   // monthlyViews = (): number => parseInt(util.suffixedNumToInt(this.$('.AnswerViewsAboutListItem').find('.detail_text').text().split(' ')[0]))
+    // totalViews = (): number => parseInt(util.suffixedNumToInt(this.$('.AnswerViewsAboutListItem').find('.main_text').text().split(' ')[0]))
+    // monthlyViews = (): number => parseInt(util.suffixedNumToInt(this.$('.AnswerViewsAboutListItem').find('.detail_text').text().split(' ')[0]))
 
     // Category credentials
-    //workCredential = (): number => parseInt(getStatList(this.$, '.WorkCredentialListItem'))
-    //studyCredential = (): number => parseInt(getStatList(this.$, '.SchoolCredentialListItem'))
-    //locationCredential = (): number => parseInt(getStatList(this.$, '.LocationCredentialListItem'))
+    // workplaces = (): number => parseInt(getStatList(this.$, '.WorkCredentialListItem'))
+    // studies = (): number => parseInt(getStatList(this.$, '.SchoolCredentialListItem'))
+    // locations = (): number => parseInt(getStatList(this.$, '.LocationCredentialListItem'))
 
     // Award dates
     // TODO convert string[] years to numbers

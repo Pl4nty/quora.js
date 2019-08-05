@@ -2,6 +2,7 @@ import 'mocha'
 import { expect } from 'chai'
 import Profile from '../src/models/profile'
 
+// Profile URIs to test
 const testUris = [
     'Thomas-Plant-1',
     'Jon-Davis-10'
@@ -16,7 +17,7 @@ testUris.forEach(uri => {
             await liveProfile.load();
         })
 
-        it("could matche expected name and anon/verified status", () => {
+        it("could match expected name and anon/verified status", () => {
             const name = liveProfile.name();
             expect(name).to.not.be.empty;
             console.log(`      is ${name}`);
@@ -34,14 +35,21 @@ testUris.forEach(uri => {
             console.log(`      has the credential: "${credential}"`)
         })
 
-        it("has numeric stats", () => {
-            expect(liveProfile.answers()).to.be.a('number');
-            expect(liveProfile.questions()).to.be.a('number');
-            expect(liveProfile.posts()).to.be.a('number');
-            expect(liveProfile.blogs()).to.be.a('number');
-            expect(liveProfile.followers()).to.be.a('number');
-            expect(liveProfile.following()).to.be.a('number');
-            expect(liveProfile.topics()).to.be.a('number');
+        // I wish
+        it("has answers", () => {
+            expect(liveProfile.answers()).to.be.a('number').and.not.NaN;
+        })
+
+        it("has questions", () => {
+            expect(liveProfile.questions()).to.be.a('number').and.not.NaN;
+        })
+
+        it("has followers", () => {
+            expect(liveProfile.followers()).to.be.a('number').and.not.NaN;
+        })
+
+        it("has following", () => {
+            expect(liveProfile.following()).to.be.a('number').and.not.NaN;
         })
     })
 })
